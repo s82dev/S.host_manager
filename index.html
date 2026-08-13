@@ -28,7 +28,6 @@
             max-width: 900px;
             margin: 0 auto;
             padding: 20px;
-            padding-bottom: 80px; /* Platz für Disclaimer-Banner */
         }
 
         /* SPRACHAUSWAHL OBEN RECHTS */
@@ -134,19 +133,40 @@
 
         footer {
             text-align: center;
-            padding: 40px 0;
+            padding: 40px 0 20px;
             color: var(--text-muted);
             font-size: 0.9rem;
             border-top: 1px solid var(--border);
             margin-top: 60px;
         }
 
-        /* --- MODAL FOR FIRST TIME LANGUAGE SELECTION --- */
+        /* DEZENTES KLEINGEDRUCKTES IM FOOTER */
+        .discreet-disclaimer {
+            font-size: 0.72rem;
+            color: #525a70;
+            margin-top: 12px;
+        }
+
+        .help-icon-hidden {
+            display: inline-block;
+            color: #525a70;
+            cursor: pointer;
+            font-size: 0.75rem;
+            margin-left: 3px;
+            text-decoration: underline;
+            user-select: none;
+        }
+
+        .help-icon-hidden:hover {
+            color: var(--accent);
+        }
+
+        /* --- MODAL POPUPS (ALLGEMEIN) --- */
         .modal-overlay {
+            display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.85);
-            display: flex;
             align-items: center;
             justify-content: center;
             z-index: 9999;
@@ -157,10 +177,22 @@
             border: 1px solid var(--border);
             border-radius: 12px;
             padding: 30px;
-            text-align: center;
-            max-width: 400px;
+            max-width: 500px;
             width: 90%;
             box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+            color: var(--text-main);
+            text-align: center;
+        }
+
+        .modal-card h3 {
+            color: var(--accent);
+            margin-top: 0;
+        }
+
+        .modal-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.5;
         }
 
         .modal-btn {
@@ -183,56 +215,26 @@
             color: #000;
         }
 
-        /* --- DISCLAIMER / COOKIE BANNER STYLE --- */
-        .disclaimer-banner {
-            position: fixed;
-            bottom: 0; left: 0; width: 100%;
-            background: #08090d;
-            border-top: 1px solid var(--border);
-            padding: 12px 20px;
-            box-sizing: border-box;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-size: 0.82rem;
-            color: var(--text-muted);
-            z-index: 8888;
-        }
-
-        .help-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: var(--border);
-            color: var(--accent);
-            font-weight: bold;
-            font-size: 12px;
-            cursor: pointer;
-            margin-left: 6px;
-        }
-
-        .btn-ack {
+        .close-modal-btn {
+            width: 100%;
+            padding: 10px;
+            margin-top: 15px;
             background: var(--accent);
             color: #000;
             border: none;
-            padding: 6px 14px;
-            border-radius: 4px;
+            border-radius: 6px;
             font-weight: bold;
             cursor: pointer;
-            font-size: 0.8rem;
         }
     </style>
 </head>
 <body>
 
-    <!-- ERSTSEITIGE SPRACHAUSWAHL (MODAL) -->
+    <!-- ERSTSEITIGE SPRACHAUSWAHL (FIRST-TIME MODAL) -->
     <div id="firstTimeModal" class="modal-overlay">
         <div class="modal-card">
-            <h2 style="color: var(--accent); margin-top:0;">⚡ Choose Language</h2>
-            <p style="color: var(--text-muted); font-size: 0.9rem;">Bitte wähle deine Sprache / Please select your language:</p>
+            <h3>⚡ Language / Sprache</h3>
+            <p>Bitte wähle deine Standardsprache / Please select your default language:</p>
             <button class="modal-btn" onclick="selectFirstLanguage('de')">🇩🇪 Deutsch</button>
             <button class="modal-btn" onclick="selectFirstLanguage('en')">🇬🇧 English</button>
             <button class="modal-btn" onclick="selectFirstLanguage('es')">🇪🇸 Español</button>
@@ -294,21 +296,30 @@
             </iframe>
         </section>
 
-        <footer id="footer">
-            ⚡ Powered by S.HOST Manager — Bereitgestellt über GitHub Pages
+        <!-- FOOTER MIT UNUNAUFFÄLLIGEM HINWEIS UND DETEKTIV-FRAGEZEICHEN -->
+        <footer>
+            <div id="footer">⚡ Powered by S.HOST Manager — Bereitgestellt über GitHub Pages</div>
+            <div class="discreet-disclaimer">
+                <span id="discText">Nutzung auf eigene Gefahr. Keine Haftung für Server oder Daten.</span>
+                <span class="help-icon-hidden" onclick="openDisclaimerModal()">[?]</span>
+            </div>
         </footer>
     </div>
 
-    <!-- DISCLAIMER / HAFTUNGSAUSSCHLUSS BANNER -->
-    <div id="disclaimerBanner" class="disclaimer-banner">
-        <div>
-            <span id="discText">Nutzung auf eigene Gefahr. Der Nutzer haftet für alle Eigenkonfigurationen & Weltdaten.</span>
-            <span class="help-icon" onclick="alert(translations[currentLang].discDetail)" title="Details">?</span>
+    <!-- HAFTUNGSAUSSCHLUSS POPUP (RECHTSINFOS) -->
+    <div id="legalModal" class="modal-overlay">
+        <div class="modal-card" style="text-align: left;">
+            <h3 id="modalTitle">⚠️ Haftungsausschluss (Disclaimer)</h3>
+            <p id="modalBody">
+                <b>1. Eigenverantwortung:</b> S.HOST ist ein kostenloses Open-Source-Skript. Die Ausführung, Nutzung und Konfiguration erfolgt zu 100% auf eigenes Risiko des Nutzers.<br><br>
+                <b>2. Keine Gewährleistung:</b> Wir übernehmen keinerlei Haftung für Datenverlust, Beschädigung von Minecraft-Welten, Systemfehler oder Sicherheitsrisiken auf dem Zielsystem.<br><br>
+                <b>3. Bestmöglicher Support:</b> Es besteht kein rechtlicher Anspruch auf Fehlerbehebung oder Garantien. Dennoch versuchen wir stets, euch über das Feedback-Formular bei Fragen oder Problemen bestmöglich zu unterstützen!
+            </p>
+            <button class="close-modal-btn" onclick="closeDisclaimerModal()" id="modalCloseBtn">Verstanden & Schließen</button>
         </div>
-        <button class="btn-ack" onclick="closeDisclaimer()" id="discBtn">Verstanden</button>
     </div>
 
-    <!-- SCRIPT (i18n & MODALS) -->
+    <!-- SCRIPT (i18n, COOKIES/LOCALSTORAGE & POPUP LOGIK) -->
     <script>
         let currentLang = 'de';
 
@@ -331,9 +342,10 @@
                 fbTitle: "💬 Feedback & Wünsche",
                 fbDesc: "Hast du Fehler gefunden oder Ideen für neue Features? Lass es uns wissen!",
                 footer: "⚡ Powered by S.HOST Manager — Bereitgestellt über GitHub Pages",
-                discText: "Eigenverantwortliche Nutzung: Der Nutzer ist selbst für alle Daten, Welten und Konfigurationen verantwortlich.",
-                discDetail: "HAFTUNGSAUSSCHLUSS:\\nS.HOST ist ein Open-Source Skript. Die Nutzung erfolgt komplett auf eigene Gefahr. Die Entwickler übernehmen keine Haftung für Datenverlust, kaputte Welten, Sicherheitsrisiken oder Schäden am System.",
-                discBtn: "Verstanden"
+                discText: "Nutzung auf eigene Gefahr. Keine Haftung für Server oder Daten.",
+                modalTitle: "⚠️ Haftungsausschluss (Disclaimer)",
+                modalBody: "<b>1. Eigenverantwortung:</b> S.HOST ist ein kostenloses Open-Source-Skript. Die Nutzung und Konfiguration erfolgt zu 100% auf eigenes Risiko.<br><br><b>2. Keine Haftung:</b> Es wird keinerlei Haftung für Datenverlust, beschädigte Welten oder Schäden am System übernommen.<br><br><b>3. Bestmöglicher Support:</b> Es besteht kein rechtlicher Anspruch auf Fehlerbehebung oder Garantien. Dennoch versuchen wir stets, euch über das Feedback-Formular bei Fragen oder Problemen bestmöglich zu unterstützen!",
+                modalCloseBtn: "Verstanden & Schließen"
             },
             en: {
                 subtitle: "The simplest Minecraft test server manager for your worlds",
@@ -353,9 +365,10 @@
                 fbTitle: "💬 Feedback & Requests",
                 fbDesc: "Found a bug or have ideas for new features? Let us know!",
                 footer: "⚡ Powered by S.HOST Manager — Hosted on GitHub Pages",
-                discText: "Use at your own risk. The user is solely responsible for all world data & configs.",
-                discDetail: "DISCLAIMER:\\nS.HOST is an open-source script provided as-is. Use at your own risk. Developers assume no responsibility for data loss, corrupted worlds, or system damage.",
-                discBtn: "I Understand"
+                discText: "Use at your own risk. No liability for servers or data.",
+                modalTitle: "⚠️ Disclaimer",
+                modalBody: "<b>1. Own Responsibility:</b> S.HOST is a free open-source script. Usage is completely at your own risk.<br><br><b>2. No Liability:</b> We assume no liability for lost data, corrupted worlds, or system issues.<br><br><b>3. Best-Effort Support:</b> There is no legal entitlement to maintenance or guarantees. Nevertheless, we always try our best to assist you via the feedback form if issues arise!",
+                modalCloseBtn: "Understood & Close"
             },
             es: {
                 subtitle: "El gestor de servidores de prueba de Minecraft más sencillo para tus mundos",
@@ -375,14 +388,19 @@
                 fbTitle: "💬 Comentarios y Sugerencias",
                 fbDesc: "¿Encontraste un error o tienes ideas para nuevas funciones? ¡Haznoslo saber!",
                 footer: "⚡ Powered by S.HOST Manager — Alojado en GitHub Pages",
-                discText: "Uso bajo su propio riesgo. El usuario es responsable de todos los datos del mundo.",
-                discDetail: "EXENCIÓN DE RESPONSABILIDAD:\\nS.HOST es un script de código abierto. El uso es bajo su propio riesgo. Los desarrolladores no asumen responsabilidad por pérdida de datos o daños.",
-                discBtn: "Entendido"
+                discText: "Uso bajo su propio riesgo. Sin responsabilidad por datos.",
+                modalTitle: "⚠️ Exención de responsabilidad",
+                modalBody: "<b>1. Responsabilidad propia:</b> S.HOST es un script de código abierto gratuito. Su uso es 100% bajo su propio riesgo.<br><br><b>2. Sin responsabilidad:</b> No asumimos ninguna responsabilidad por pérdida de datos o mundos dañados.<br><br><b>3. Soporte según capacidades:</b> No existe derecho legal a garantías o reparaciones. ¡Sin embargo, siempre intentamos ayudarle lo mejor posible a través del formulario de comentarios!",
+                modalCloseBtn: "Entendido y Cerrar"
             }
         };
 
         function changeLanguage(lang) {
             currentLang = lang;
+            
+            // Speichere die gewählte Sprache im Browser-Speicher (Cookie/LocalStorage)
+            localStorage.setItem('shost_preferred_lang', lang);
+
             const t = translations[lang];
             document.getElementById('subtitle').innerHTML = t.subtitle;
             document.getElementById('btnDownload').innerHTML = t.btnDownload;
@@ -402,24 +420,37 @@
             document.getElementById('fb-desc').innerHTML = t.fbDesc;
             document.getElementById('footer').innerHTML = t.footer;
             document.getElementById('discText').innerHTML = t.discText;
-            document.getElementById('discBtn').innerHTML = t.discBtn;
+            document.getElementById('modalTitle').innerHTML = t.modalTitle;
+            document.getElementById('modalBody').innerHTML = t.modalBody;
+            document.getElementById('modalCloseBtn').innerHTML = t.modalCloseBtn;
             document.getElementById('languageSelect').value = lang;
         }
 
         function selectFirstLanguage(lang) {
-            localStorage.setItem('shost_lang_selected', 'true');
-            document.getElementById('firstTimeModal').style.display = 'none';
             changeLanguage(lang);
+            document.getElementById('firstTimeModal').style.display = 'none';
         }
 
-        function closeDisclaimer() {
-            document.getElementById('disclaimerBanner').style.display = 'none';
+        function openDisclaimerModal() {
+            document.getElementById('legalModal').style.display = 'flex';
+        }
+
+        function closeDisclaimerModal() {
+            document.getElementById('legalModal').style.display = 'none';
         }
 
         window.onload = function() {
-            // Überprüfe ob der Nutzer schon mal da war
-            if (localStorage.getItem('shost_lang_selected')) {
-                document.getElementById('firstTimeModal').style.display = 'none';
+            // Lade gespeicherte Sprache aus dem Browser-Speicher
+            const savedLang = localStorage.getItem('shost_preferred_lang');
+            
+            if (savedLang && translations[savedLang]) {
+                // Wenn Sprache schon gespeichert ist, direkt laden und Modal nicht zeigen
+                changeLanguage(savedLang);
+            } else {
+                // Wenn Erster Besuch: Zeige das Abfrage-Modal!
+                document.getElementById('firstTimeModal').style.display = 'flex';
+                
+                // Fallback-Erkennung für die Sprache im Hintergrund
                 const userLang = navigator.language || navigator.userLanguage;
                 if (userLang.startsWith('es')) changeLanguage('es');
                 else if (userLang.startsWith('en')) changeLanguage('en');
