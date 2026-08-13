@@ -30,9 +30,27 @@
             padding: 20px;
         }
 
+        /* SPRACHAUSWAHL OBEN RECHTS */
+        .top-bar {
+            display: flex;
+            justify-content: flex-end;
+            padding: 10px 0;
+        }
+
+        .lang-select {
+            background: var(--card-bg);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            outline: none;
+        }
+
         header {
             text-align: center;
-            padding: 60px 20px 40px;
+            padding: 40px 20px 40px;
             border-bottom: 1px solid var(--border);
         }
 
@@ -106,7 +124,7 @@
 
         iframe {
             width: 100%;
-            height: 500px;
+            height: 550px;
             border: none;
             border-radius: 8px;
             margin-top: 20px;
@@ -126,57 +144,160 @@
 <body>
 
     <div class="container">
+        <!-- SPRACHAUSWAHL -->
+        <div class="top-bar">
+            <select id="languageSelect" class="lang-select" onchange="changeLanguage(this.value)">
+                <option value="de">🇩🇪 Deutsch</option>
+                <option value="en">🇬🇧 English</option>
+                <option value="es">🇪🇸 Español</option>
+            </select>
+        </div>
+
         <!-- HEADER / HERO -->
         <header>
             <div class="logo">⚡ S.HOST</div>
-            <div class="subtitle">Der einfachste Minecraft Test-Server Manager für deine Welten</div>
-            <a href="shost_minecraft_manager.zip" class="btn-download">⬇ S.HOST herunterladen (.zip)</a>
+            <div class="subtitle" id="subtitle">Der einfachste Minecraft Test-Server Manager für deine Welten</div>
+            <a href="shost_minecraft_manager.zip" class="btn-download" id="btnDownload">⬇ S.HOST herunterladen (.zip)</a>
         </header>
 
         <!-- FEATURES -->
         <section class="grid">
             <div class="card">
-                <h3>🎮 Java & Bedrock</h3>
-                <p>Spiele mit Freunden auf PC, Smartphone oder Konsole. S.HOST lädt auf Wunsch automatisch GeyserMC und Floodgate herunter.</p>
+                <h3 id="f1-title">🎮 Java & Bedrock</h3>
+                <p id="f1-desc">Spiele mit Freunden auf PC, Smartphone oder Konsole. S.HOST lädt auf Wunsch automatisch GeyserMC und Floodgate herunter.</p>
             </div>
             <div class="card">
-                <h3>🌐 Google Drive Import</h3>
-                <p>Kopiere einfach den Freigabe-Link deiner <code>world.zip</code>. S.HOST entpackt und startet deine Test-Welt direkt.</p>
+                <h3 id="f2-title">🌐 Google Drive Import</h3>
+                <p id="f2-desc">Kopiere einfach den Freigabe-Link deiner <code>world.zip</code>. S.HOST entpackt und startet deine Test-Welt direkt.</p>
             </div>
             <div class="card">
-                <h3>💻 Einfache Web-UI</h3>
-                <p>Steuere den Server direkt über deinen Browser – mit Live-Konsole, Befehlseingabe und übersichtlichen Controls.</p>
+                <h3 id="f3-title">💻 Einfache Web-UI</h3>
+                <p id="f3-desc">Steuere den Server direkt über deinen Browser – mit Live-Konsole, Befehlseingabe und übersichtlichen Controls.</p>
             </div>
         </section>
 
         <!-- ANLEITUNG -->
         <section class="card">
-            <h3>🚀 Schnellstart Anleitung</h3>
+            <h3 id="guide-title">🚀 Schnellstart Anleitung</h3>
             <ol class="step-list">
-                <li>Lade das <b>S.HOST Archiv (.zip)</b> oben herunter und entpacke es.</li>
-                <li>Installiere die Voraussetzungen (Python 3 & Java 17+).</li>
-                <li>Öffne das Terminal im Ordner und installiere Flask: <code>pip install flask</code></li>
-                <li>Starte S.HOST mit: <code>python shost.py</code></li>
-                <li>Öffne <b>http://localhost:5000</b> in deinem Browser!</li>
+                <li id="s1">Lade das <b>S.HOST Archiv (.zip)</b> oben herunter und entpacke es.</li>
+                <li id="s2">Installiere die Voraussetzungen (Python 3 & Java 17+).</li>
+                <li id="s3">Öffne das Terminal im Ordner und installiere Flask: <code>pip install flask</code></li>
+                <li id="s4">Starte S.HOST mit: <code>python shost.py</code></li>
+                <li id="s5">Öffne <b>http://localhost:5000</b> in deinem Browser!</li>
             </ol>
         </section>
 
         <!-- GOOGLE FEEDBACK INTEGRATION -->
         <section class="feedback-section">
-            <h2>💬 Feedback & Wünsche</h2>
-            <p>Hast du Fehler gefunden oder Ideen für neue Features? Lass es uns wissen!</p>
+            <h2 id="fb-title">💬 Feedback & Wünsche</h2>
+            <p id="fb-desc">Hast du Fehler gefunden oder Ideen für neue Features? Lass es uns wissen!</p>
             
-            <!-- ERSETZE DIESEN LINK DURCH DEINEN GOOGLE FORMULAR EMBED-LINK -->
-            <iframe src=":https://docs.google.com/forms/d/e/1FAIpQLSfLd5-kOkQwMX1DDHfkmW35RLCUj4LxUV3Dvhkl6Wh1tcNJ9Q/viewform?usp=dialog">
+            <!-- GOOGLE FORMULAR (KORRIGIERT) -->
+            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfLd5-kOkQwMX1DDHfkmW35RLCUj4LxUV3Dvhkl6Wh1tcNJ9Q/viewform?embedded=true">
                 Wird geladen…
             </iframe>
         </section>
 
-        <footer>
-            ⚡ Powered by S.HOST Manager — 
-            Bereitgestellt über GitHub Pages
+        <footer id="footer">
+            ⚡ Powered by S.HOST Manager — Bereitgestellt über GitHub Pages
         </footer>
     </div>
 
+    <!-- SPRACH-SCRIPT (i18n) -->
+    <script>
+        const translations = {
+            de: {
+                subtitle: "Der einfachste Minecraft Test-Server Manager für deine Welten",
+                btnDownload: "⬇ S.HOST herunterladen (.zip)",
+                f1Title: "🎮 Java & Bedrock",
+                f1Desc: "Spiele mit Freunden auf PC, Smartphone oder Konsole. S.HOST lädt auf Wunsch automatisch GeyserMC und Floodgate herunter.",
+                f2Title: "🌐 Google Drive Import",
+                f2Desc: "Kopiere einfach den Freigabe-Link deiner world.zip. S.HOST entpackt und startet deine Test-Welt direkt.",
+                f3Title: "💻 Einfache Web-UI",
+                f3Desc: "Steuere den Server direkt über deinen Browser – mit Live-Konsole, Befehlseingabe und übersichtlichen Controls.",
+                guideTitle: "🚀 Schnellstart Anleitung",
+                s1: "Lade das <b>S.HOST Archiv (.zip)</b> oben herunter und entpacke es.",
+                s2: "Installiere die Voraussetzungen (Python 3 & Java 17+).",
+                s3: "Öffne das Terminal im Ordner und installiere Flask: <code>pip install flask</code>",
+                s4: "Starte S.HOST mit: <code>python shost.py</code>",
+                s5: "Öffne <b>http://localhost:5000</b> in deinem Browser!",
+                fbTitle: "💬 Feedback & Wünsche",
+                fbDesc: "Hast du Fehler gefunden oder Ideen für neue Features? Lass es uns wissen!",
+                footer: "⚡ Powered by S.HOST Manager — Bereitgestellt über GitHub Pages"
+            },
+            en: {
+                subtitle: "The simplest Minecraft test server manager for your worlds",
+                btnDownload: "⬇ Download S.HOST (.zip)",
+                f1Title: "🎮 Java & Bedrock",
+                f1Desc: "Play with friends on PC, mobile, or console. S.HOST automatically downloads GeyserMC and Floodgate if requested.",
+                f2Title: "🌐 Google Drive Import",
+                f2Desc: "Just copy the share link of your world.zip. S.HOST extracts and launches your test world directly.",
+                f3Title: "💻 Easy Web UI",
+                f3Desc: "Control the server right from your browser – with live console, command execution, and clean controls.",
+                guideTitle: "🚀 Quick Start Guide",
+                s1: "Download the <b>S.HOST archive (.zip)</b> above and extract it.",
+                s2: "Install prerequisites (Python 3 & Java 17+).",
+                s3: "Open your terminal in the folder and install Flask: <code>pip install flask</code>",
+                s4: "Run S.HOST with: <code>python shost.py</code>",
+                s5: "Open <b>http://localhost:5000</b> in your browser!",
+                fbTitle: "💬 Feedback & Requests",
+                fbDesc: "Found a bug or have ideas for new features? Let us know!",
+                footer: "⚡ Powered by S.HOST Manager — Hosted on GitHub Pages"
+            },
+            es: {
+                subtitle: "El gestor de servidores de prueba de Minecraft más sencillo para tus mundos",
+                btnDownload: "⬇ Descargar S.HOST (.zip)",
+                f1Title: "🎮 Java y Bedrock",
+                f1Desc: "Juega con amigos en PC, móvil o consola. S.HOST descarga automáticamente GeyserMC y Floodgate si se solicita.",
+                f2Title: "🌐 Importación de Google Drive",
+                f2Desc: "Solo copia el enlace compartido de tu world.zip. S.HOST lo descomprime y ejecuta tu mundo directamente.",
+                f3Title: "💻 Interfaz Web Fácil",
+                f3Desc: "Controla el servidor desde tu navegador: consola en vivo, envío de comandos y controles sencillos.",
+                guideTitle: "🚀 Guía de Inicio Rápido",
+                s1: "Descarga el <b>archivo S.HOST (.zip)</b> arriba y descompresiónalo.",
+                s2: "Instala los requisitos previos (Python 3 y Java 17+).",
+                s3: "Abre la terminal en la carpeta e instala Flask: <code>pip install flask</code>",
+                s4: "Ejecuta S.HOST con: <code>python shost.py</code>",
+                s5: "¡Abre <b>http://localhost:5000</b> en tu navegador!",
+                fbTitle: "💬 Comentarios y Sugerencias",
+                fbDesc: "¿Encontraste un error o tienes ideas para nuevas funciones? ¡Haznoslo saber!",
+                footer: "⚡ Powered by S.HOST Manager — Alojado en GitHub Pages"
+            }
+        };
+
+        function changeLanguage(lang) {
+            const t = translations[lang];
+            document.getElementById('subtitle').innerHTML = t.subtitle;
+            document.getElementById('btnDownload').innerHTML = t.btnDownload;
+            document.getElementById('f1-title').innerHTML = t.f1Title;
+            document.getElementById('f1-desc').innerHTML = t.f1Desc;
+            document.getElementById('f2-title').innerHTML = t.f2Title;
+            document.getElementById('f2-desc').innerHTML = t.f2Desc;
+            document.getElementById('f3-title').innerHTML = t.f3Title;
+            document.getElementById('f3-desc').innerHTML = t.f3Desc;
+            document.getElementById('guide-title').innerHTML = t.guideTitle;
+            document.getElementById('s1').innerHTML = t.s1;
+            document.getElementById('s2').innerHTML = t.s2;
+            document.getElementById('s3').innerHTML = t.s3;
+            document.getElementById('s4').innerHTML = t.s4;
+            document.getElementById('s5').innerHTML = t.s5;
+            document.getElementById('fb-title').innerHTML = t.fbTitle;
+            document.getElementById('fb-desc').innerHTML = t.fbDesc;
+            document.getElementById('footer').innerHTML = t.footer;
+        }
+
+        // Automatische Erkennung der Browsersprache beim Laden
+        window.onload = function() {
+            const userLang = navigator.language || navigator.userLanguage;
+            if (userLang.startsWith('es')) {
+                document.getElementById('languageSelect').value = 'es';
+                changeLanguage('es');
+            } else if (userLang.startsWith('en')) {
+                document.getElementById('languageSelect').value = 'en';
+                changeLanguage('en');
+            }
+        };
+    </script>
 </body>
-</html> 
+</html>
