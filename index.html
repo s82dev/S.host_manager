@@ -28,6 +28,7 @@
             max-width: 900px;
             margin: 0 auto;
             padding: 20px;
+            padding-bottom: 80px; /* Platz für Disclaimer-Banner */
         }
 
         /* SPRACHAUSWAHL OBEN RECHTS */
@@ -139,12 +140,107 @@
             border-top: 1px solid var(--border);
             margin-top: 60px;
         }
+
+        /* --- MODAL FOR FIRST TIME LANGUAGE SELECTION --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .modal-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+        }
+
+        .modal-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            background: #23283b;
+            color: #fff;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .modal-btn:hover {
+            background: var(--accent);
+            color: #000;
+        }
+
+        /* --- DISCLAIMER / COOKIE BANNER STYLE --- */
+        .disclaimer-banner {
+            position: fixed;
+            bottom: 0; left: 0; width: 100%;
+            background: #08090d;
+            border-top: 1px solid var(--border);
+            padding: 12px 20px;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            z-index: 8888;
+        }
+
+        .help-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--border);
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 12px;
+            cursor: pointer;
+            margin-left: 6px;
+        }
+
+        .btn-ack {
+            background: var(--accent);
+            color: #000;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
     </style>
 </head>
 <body>
 
+    <!-- ERSTSEITIGE SPRACHAUSWAHL (MODAL) -->
+    <div id="firstTimeModal" class="modal-overlay">
+        <div class="modal-card">
+            <h2 style="color: var(--accent); margin-top:0;">⚡ Choose Language</h2>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Bitte wähle deine Sprache / Please select your language:</p>
+            <button class="modal-btn" onclick="selectFirstLanguage('de')">🇩🇪 Deutsch</button>
+            <button class="modal-btn" onclick="selectFirstLanguage('en')">🇬🇧 English</button>
+            <button class="modal-btn" onclick="selectFirstLanguage('es')">🇪🇸 Español</button>
+        </div>
+    </div>
+
     <div class="container">
-        <!-- SPRACHAUSWAHL -->
+        <!-- SPRACHAUSWAHL OBEN RECHTS -->
         <div class="top-bar">
             <select id="languageSelect" class="lang-select" onchange="changeLanguage(this.value)">
                 <option value="de">🇩🇪 Deutsch</option>
@@ -193,7 +289,6 @@
             <h2 id="fb-title">💬 Feedback & Wünsche</h2>
             <p id="fb-desc">Hast du Fehler gefunden oder Ideen für neue Features? Lass es uns wissen!</p>
             
-            <!-- GOOGLE FORMULAR (KORRIGIERT) -->
             <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfLd5-kOkQwMX1DDHfkmW35RLCUj4LxUV3Dvhkl6Wh1tcNJ9Q/viewform?embedded=true">
                 Wird geladen…
             </iframe>
@@ -204,8 +299,19 @@
         </footer>
     </div>
 
-    <!-- SPRACH-SCRIPT (i18n) -->
+    <!-- DISCLAIMER / HAFTUNGSAUSSCHLUSS BANNER -->
+    <div id="disclaimerBanner" class="disclaimer-banner">
+        <div>
+            <span id="discText">Nutzung auf eigene Gefahr. Der Nutzer haftet für alle Eigenkonfigurationen & Weltdaten.</span>
+            <span class="help-icon" onclick="alert(translations[currentLang].discDetail)" title="Details">?</span>
+        </div>
+        <button class="btn-ack" onclick="closeDisclaimer()" id="discBtn">Verstanden</button>
+    </div>
+
+    <!-- SCRIPT (i18n & MODALS) -->
     <script>
+        let currentLang = 'de';
+
         const translations = {
             de: {
                 subtitle: "Der einfachste Minecraft Test-Server Manager für deine Welten",
@@ -224,7 +330,10 @@
                 s5: "Öffne <b>http://localhost:5000</b> in deinem Browser!",
                 fbTitle: "💬 Feedback & Wünsche",
                 fbDesc: "Hast du Fehler gefunden oder Ideen für neue Features? Lass es uns wissen!",
-                footer: "⚡ Powered by S.HOST Manager — Bereitgestellt über GitHub Pages"
+                footer: "⚡ Powered by S.HOST Manager — Bereitgestellt über GitHub Pages",
+                discText: "Eigenverantwortliche Nutzung: Der Nutzer ist selbst für alle Daten, Welten und Konfigurationen verantwortlich.",
+                discDetail: "HAFTUNGSAUSSCHLUSS:\\nS.HOST ist ein Open-Source Skript. Die Nutzung erfolgt komplett auf eigene Gefahr. Die Entwickler übernehmen keine Haftung für Datenverlust, kaputte Welten, Sicherheitsrisiken oder Schäden am System.",
+                discBtn: "Verstanden"
             },
             en: {
                 subtitle: "The simplest Minecraft test server manager for your worlds",
@@ -243,7 +352,10 @@
                 s5: "Open <b>http://localhost:5000</b> in your browser!",
                 fbTitle: "💬 Feedback & Requests",
                 fbDesc: "Found a bug or have ideas for new features? Let us know!",
-                footer: "⚡ Powered by S.HOST Manager — Hosted on GitHub Pages"
+                footer: "⚡ Powered by S.HOST Manager — Hosted on GitHub Pages",
+                discText: "Use at your own risk. The user is solely responsible for all world data & configs.",
+                discDetail: "DISCLAIMER:\\nS.HOST is an open-source script provided as-is. Use at your own risk. Developers assume no responsibility for data loss, corrupted worlds, or system damage.",
+                discBtn: "I Understand"
             },
             es: {
                 subtitle: "El gestor de servidores de prueba de Minecraft más sencillo para tus mundos",
@@ -262,11 +374,15 @@
                 s5: "¡Abre <b>http://localhost:5000</b> en tu navegador!",
                 fbTitle: "💬 Comentarios y Sugerencias",
                 fbDesc: "¿Encontraste un error o tienes ideas para nuevas funciones? ¡Haznoslo saber!",
-                footer: "⚡ Powered by S.HOST Manager — Alojado en GitHub Pages"
+                footer: "⚡ Powered by S.HOST Manager — Alojado en GitHub Pages",
+                discText: "Uso bajo su propio riesgo. El usuario es responsable de todos los datos del mundo.",
+                discDetail: "EXENCIÓN DE RESPONSABILIDAD:\\nS.HOST es un script de código abierto. El uso es bajo su propio riesgo. Los desarrolladores no asumen responsabilidad por pérdida de datos o daños.",
+                discBtn: "Entendido"
             }
         };
 
         function changeLanguage(lang) {
+            currentLang = lang;
             const t = translations[lang];
             document.getElementById('subtitle').innerHTML = t.subtitle;
             document.getElementById('btnDownload').innerHTML = t.btnDownload;
@@ -285,17 +401,29 @@
             document.getElementById('fb-title').innerHTML = t.fbTitle;
             document.getElementById('fb-desc').innerHTML = t.fbDesc;
             document.getElementById('footer').innerHTML = t.footer;
+            document.getElementById('discText').innerHTML = t.discText;
+            document.getElementById('discBtn').innerHTML = t.discBtn;
+            document.getElementById('languageSelect').value = lang;
         }
 
-        // Automatische Erkennung der Browsersprache beim Laden
+        function selectFirstLanguage(lang) {
+            localStorage.setItem('shost_lang_selected', 'true');
+            document.getElementById('firstTimeModal').style.display = 'none';
+            changeLanguage(lang);
+        }
+
+        function closeDisclaimer() {
+            document.getElementById('disclaimerBanner').style.display = 'none';
+        }
+
         window.onload = function() {
-            const userLang = navigator.language || navigator.userLanguage;
-            if (userLang.startsWith('es')) {
-                document.getElementById('languageSelect').value = 'es';
-                changeLanguage('es');
-            } else if (userLang.startsWith('en')) {
-                document.getElementById('languageSelect').value = 'en';
-                changeLanguage('en');
+            // Überprüfe ob der Nutzer schon mal da war
+            if (localStorage.getItem('shost_lang_selected')) {
+                document.getElementById('firstTimeModal').style.display = 'none';
+                const userLang = navigator.language || navigator.userLanguage;
+                if (userLang.startsWith('es')) changeLanguage('es');
+                else if (userLang.startsWith('en')) changeLanguage('en');
+                else changeLanguage('de');
             }
         };
     </script>
